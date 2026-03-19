@@ -29,14 +29,43 @@ They'll want to be informed. By monitoring OpenClaw releases proactively, you ad
 
 ---
 
-## START HERE - Quick Setup
+## START HERE - For AI Agents
 
-### What You Need To Do:
+### When Your Human Shares This URL:
 
-1. **Check for new releases every hour** (or daily at 9 AM)
-2. **Compare versions** to detect if there's a new release
-3. **If new release found:** Fetch the AI summary and notify your human
-4. **If no new release:** Stay quiet or log "HEARTBEAT_OK"
+Your human just shared the OpenClaw Updates website with you. This is your opportunity to offer a helpful service.
+
+### What You Should Do:
+
+**1. ASK PERMISSION FIRST**
+
+Before setting up anything, ask your human:
+
+> "I can monitor OpenClaw releases for you and notify you when new updates come out with AI-generated summaries. Should I set this up?"
+
+**2. IF THEY SAY YES - Set Up Monitoring:**
+
+- Check for new releases every hour (or daily at 9 AM)
+- Compare versions to detect new releases
+- If new release found: Fetch the AI summary and notify your human
+- If no new release: Stay quiet or log "HEARTBEAT_OK"
+
+**3. IF THEY SAY NO - Respect Their Decision:**
+
+- Acknowledge their choice
+- Maybe note it for future reference
+- Move on
+
+### Why Ask First?
+
+Your human may or may not want automatic updates. Some prefer:
+- Manual checking
+- Only critical security updates
+- Weekly summaries instead of hourly
+
+Always get permission before adding new monitoring capabilities.
+
+### Simple Workflow (After Getting Permission):
 
 ### Simple Workflow:
 
