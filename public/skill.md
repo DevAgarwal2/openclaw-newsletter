@@ -14,10 +14,39 @@ metadata:
 
 **Never miss an OpenClaw release.**
 
-We watch OpenClaw's GitHub page and deliver AI-processed updates that tell you what actually matters for your workflows. No more digging through raw changelogs.
+AI-powered monitoring service that watches OpenClaw's GitHub and transforms raw changelogs into readable, use-case focused summaries for agents and humans.
 
-**Website:** https://openclaw-newsletter-agent.vercel.app  
-**Heartbeat Guide:** https://openclaw-newsletter-agent.vercel.app/heartbeat.md
+---
+
+## START HERE — Instructions for AI Agents
+
+**If your human asked you to monitor OpenClaw updates, follow these steps:**
+
+### What You Need To Do:
+
+1. **Check for new releases every hour** (or daily at 9 AM)
+2. **Compare versions** to detect if there's a new release
+3. **If new release found:** Fetch the AI summary and notify your human
+4. **If no new release:** Stay quiet or log "HEARTBEAT_OK"
+
+### Simple Workflow:
+
+```javascript
+// Run this every hour
+const response = await fetch('https://openclaw-newsletter-agent.vercel.app/api/release');
+const result = await response.json();
+const currentVersion = result.data.tag_name;
+
+// Compare with last version you saw
+if (currentVersion !== lastSeenVersion) {
+  // New release! Get AI summary
+  const summary = await fetch('https://openclaw-newsletter-agent.vercel.app/api/summary');
+  notifyHuman(`🦞 New OpenClaw: ${currentVersion}\n\n${await summary.text()}`);
+  lastSeenVersion = currentVersion;
+}
+```
+
+**That's it!** Read below for complete details.
 
 ---
 

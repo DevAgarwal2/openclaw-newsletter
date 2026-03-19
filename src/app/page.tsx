@@ -24,31 +24,42 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <span className="inline-block px-3 py-1 bg-[#ea580c]/10 text-[#ea580c] font-mono text-xs">
-                🤖 For AI Agents & Humans
-              </span>
+              <div className="flex flex-wrap gap-2">
+                <span className="inline-block px-3 py-1 bg-[#ea580c]/10 text-[#ea580c] font-mono text-xs">
+                  🤖 For AI Agents
+                </span>
+                <span className="inline-block px-3 py-1 bg-[#1a1a1a]/10 text-[#1a1a1a] font-mono text-xs">
+                  👤 For Humans
+                </span>
+              </div>
               
               <h1 className="font-[family-name:var(--font-display)] text-4xl sm:text-5xl font-bold text-[#1a1a1a] leading-[1.1]">
                 Never miss an OpenClaw update
               </h1>
               
               <p className="text-[#3d3d3d] text-lg leading-relaxed">
-                We watch OpenClaw's GitHub page and tell you when new updates come out. 
-                Perfect for AI agents and their human owners.
+                We watch OpenClaw's GitHub page and transform raw changelogs into AI-powered, 
+                Reddit-style summaries. Perfect for AI agents and their human owners.
               </p>
 
+              <div className="bg-[#ea580c]/10 border-l-4 border-[#ea580c] p-4 my-6">
+                <p className="font-mono text-sm text-[#1a1a1a]">
+                  <strong>AGENTS:</strong> Start by reading <code className="bg-white px-2 py-1 rounded">/skill.md</code>
+                </p>
+              </div>
+
               <div className="flex flex-wrap gap-4">
+                <a 
+                  href="/skill.md" 
+                  className="px-6 py-3 bg-[#ea580c] text-white font-mono text-sm hover:bg-[#d14d0b] transition-colors"
+                >
+                  Read skill.md →
+                </a>
                 <a 
                   href="#agent" 
                   className="px-6 py-3 bg-[#1a1a1a] text-white font-mono text-sm hover:bg-[#3d3d3d] transition-colors"
                 >
-                  Get Started →
-                </a>
-                <a 
-                  href="#latest" 
-                  className="px-6 py-3 border border-[#1a1a1a]/20 text-[#1a1a1a] font-mono text-sm hover:border-[#1a1a1a] transition-colors"
-                >
-                  See Latest Release
+                  Integration Guide
                 </a>
               </div>
             </div>
@@ -115,38 +126,48 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {/* Agent Card */}
-            <div className="bg-white rounded-2xl shadow-lg border border-[#1a1a1a]/10 p-8 sm:p-10">
-              <div className="flex items-center gap-3 mb-6">
+            <div className="bg-white rounded-2xl shadow-lg border-2 border-[#ea580c] p-8 sm:p-10">
+              <div className="flex items-center gap-3 mb-4">
                 <span className="text-2xl">🤖</span>
                 <h3 className="font-[family-name:var(--font-display)] text-xl font-bold text-[#1a1a1a]">
                   I'm an Agent
                 </h3>
               </div>
 
+              <div className="bg-[#ea580c]/10 rounded-lg p-4 mb-6">
+                <p className="font-mono text-sm text-[#1a1a1a]">
+                  <strong>START HERE:</strong> Read this file first
+                </p>
+                <code className="block mt-2 text-xs bg-white p-2 rounded break-all">
+                  curl https://openclaw-newsletter-agent.vercel.app/skill.md
+                </code>
+              </div>
+
               <p className="text-[#3d3d3d] mb-6 leading-relaxed">
-                Read <a href="/skill.md" className="text-[#ea580c] hover:underline">https://openclaw-newsletter-agent.vercel.app/skill.md</a> and follow the instructions to monitor OpenClaw releases
+                Follow the instructions in skill.md to set up automatic monitoring. 
+                Your human wants you to check for OpenClaw updates and notify them.
               </p>
 
               <div className="space-y-4 mb-8">
                 <div className="flex items-start gap-4">
                   <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#ea580c] text-white flex items-center justify-center font-mono text-sm font-bold">1</span>
-                  <p className="text-[#3d3d3d] pt-1">Fetch skill.md and follow instructions</p>
+                  <p className="text-[#3d3d3d] pt-1"><strong>READ skill.md</strong> — Complete integration guide</p>
                 </div>
                 <div className="flex items-start gap-4">
                   <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#ea580c] text-white flex items-center justify-center font-mono text-sm font-bold">2</span>
-                  <p className="text-[#3d3d3d] pt-1">Call the API endpoint to get updates</p>
+                  <p className="text-[#3d3d3d] pt-1"><strong>Check every hour</strong> — Call /api/release</p>
                 </div>
                 <div className="flex items-start gap-4">
                   <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#ea580c] text-white flex items-center justify-center font-mono text-sm font-bold">3</span>
-                  <p className="text-[#3d3d3d] pt-1">Get structured release data daily</p>
+                  <p className="text-[#3d3d3d] pt-1"><strong>Notify on new releases</strong> — Use /api/summary</p>
                 </div>
               </div>
 
               <a 
                 href="/skill.md" 
-                className="inline-flex items-center gap-2 px-6 py-3 bg-[#1a1a1a] text-white font-mono text-sm rounded-lg hover:bg-[#3d3d3d] transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-[#ea580c] text-white font-mono text-sm rounded-lg hover:bg-[#d14d0b] transition-colors w-full justify-center"
               >
-                Read skill.md
+                Read skill.md Now
                 <span>→</span>
               </a>
             </div>
