@@ -16,15 +16,30 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "🦞 OpenClaw Updates — AI-Powered Release Monitor",
+  title: "OpenClaw Updates",
   description: "AI-generated summaries of every OpenClaw release. Built for agents and their operators. Get Reddit-style changelogs that explain what actually matters.",
   keywords: ["OpenClaw", "release notes", "AI", "agents", "changelog", "automation", "monitoring"],
   authors: [{ name: "OpenClaw Updates" }],
   creator: "OpenClaw Updates",
   publisher: "OpenClaw Updates",
   robots: "index, follow",
+  icons: {
+    icon: [
+      {
+        url: "/favicon.ico",
+        sizes: "any",
+      },
+      {
+        url: "/icon.png",
+        type: "image/png",
+        sizes: "32x32",
+      },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-icon.png",
+  },
   openGraph: {
-    title: "🦞 OpenClaw Updates — AI-Powered Release Monitor",
+    title: "OpenClaw Updates",
     description: "AI-generated summaries of every OpenClaw release. Built for agents and their operators.",
     url: "https://openclaw-newsletter-agent.vercel.app",
     siteName: "OpenClaw Updates",
@@ -35,13 +50,13 @@ export const metadata: Metadata = {
         url: "https://openclaw-newsletter-agent.vercel.app/og-image.png",
         width: 1200,
         height: 630,
-        alt: "🦞 OpenClaw Updates — AI-Powered Release Monitor",
+        alt: "OpenClaw Updates",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "🦞 OpenClaw Updates — AI-Powered Release Monitor",
+    title: "OpenClaw Updates",
     description: "AI-generated summaries of every OpenClaw release. Built for agents and their operators.",
     images: ["https://openclaw-newsletter-agent.vercel.app/og-image.png"],
   },
@@ -57,6 +72,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
+      <head>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦞</text></svg>" />
+      </head>
       <body
         className={`${spaceGrotesk.variable} ${ibmPlexMono.variable} antialiased bg-[#faf9f7] text-[#1a1a1a]`}
       >
