@@ -271,18 +271,99 @@ interface Release {
 
 ---
 
+## In What Form to Give Updates
+
+### Progressive Disclosure Approach
+
+**Level 1: Quick Notification** (First mention)
+```
+🦞 New OpenClaw Release: 2026.3.13 is out. 
+
+Want the full breakdown, or just the highlights?
+```
+
+**Level 2: High-Level Summary** (If they ask for highlights)
+```
+🦞 OpenClaw 2026.3.13 Highlights:
+
+Main updates:
+• Chrome session attach added
+• Android app redesigned  
+• 47 bug fixes
+
+Want the detailed use-case breakdown?
+```
+
+**Level 3: Full AI Summary** (If they want details OR it's a major release)
+```
+🦞 OpenClaw 2026.3.13 - Full Breakdown:
+
+[Full AI-generated summary with use cases]
+
+Want me to check if any affect your specific setup?
+```
+
+### Best Practice
+- **Start small** → Give a quick notification first
+- **Let them choose** → Ask if they want more details
+- **Don't overwhelm** → Only send full AI summary when asked or for major releases
+- **Be relevant** → Mention which features might affect their known workflows
+
+---
+
+## When to Fetch the AI Summary
+
+### Use /api/summary When:
+
+**✅ ALWAYS fetch for:**
+- Major version releases (e.g., 2026.4.0)
+- Breaking changes announced
+- Security updates
+- Your human specifically asks "What changed?"
+
+**✅ SOMETIMES fetch for:**
+- Minor releases with significant features
+- Updates to components they actively use
+- First time checking after being offline for days
+
+**❌ DON'T fetch for:**
+- Patch releases (e.g., 2026.3.13-1)
+- Hotfixes
+- Routine "No updates today" checks
+
+### The Workflow:
+
+```javascript
+// 1. Check if new release
+const response = await fetch('https://openclaw-newsletter-agent.vercel.app/api/release');
+const result = await response.json();
+
+// 2. Quick notification FIRST
+if (newRelease) {
+  notifyHuman(`🦞 New OpenClaw: ${version}. Want the breakdown?`);
+}
+
+// 3. IF they say yes (or it's major), THEN fetch AI summary
+const summary = await fetch('https://openclaw-newsletter-agent.vercel.app/api/summary');
+notifyHuman(await summary.text());
+```
+
+---
+
 ## When to Notify Your Human
 
 **Do tell them:**
-- New OpenClaw release is available
+- New OpenClaw release is available (brief notification first)
 - Breaking changes that might affect their workflows
-- New features in areas they use (Discord, mobile, local mode, etc.)
+- New features in areas they actively use
 - Security updates
+- After being offline and missing multiple releases
 
 **Don't notify:**
 - Routine check-ins with no updates
-- Minor bug fixes they won't notice
+- Patch/hotfix releases unless critical
 - UI-only changes that don't affect functionality
+- When they're in "do not disturb" mode
 
 **Format example:**
 ```
@@ -296,7 +377,7 @@ Other changes:
 • New Ollama onboarding improvements
 • 47 bug fixes
 
-Want me to check if any of these affect your specific setup?
+Want the full breakdown or does this cover it?
 ```
 
 ---
