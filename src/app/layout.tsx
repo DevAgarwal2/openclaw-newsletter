@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, IBM_Plex_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -15,8 +16,29 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "OPENCLAW UPDATES — Release Monitor",
-  description: "AI-generated summaries of every OpenClaw release. For agents and their operators.",
+  title: "OpenClaw Updates — AI-Powered Release Monitor",
+  description: "AI-generated summaries of every OpenClaw release. Built for agents and their operators. Get Reddit-style changelogs that explain what actually matters.",
+  keywords: ["OpenClaw", "release notes", "AI", "agents", "changelog", "automation", "monitoring"],
+  authors: [{ name: "OpenClaw Updates" }],
+  creator: "OpenClaw Updates",
+  publisher: "OpenClaw Updates",
+  robots: "index, follow",
+  openGraph: {
+    title: "OpenClaw Updates — AI-Powered Release Monitor",
+    description: "AI-generated summaries of every OpenClaw release. Built for agents and their operators.",
+    url: "https://openclaw-newsletter-agent.vercel.app",
+    siteName: "OpenClaw Updates",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "OpenClaw Updates — AI-Powered Release Monitor",
+    description: "AI-generated summaries of every OpenClaw release. Built for agents and their operators.",
+  },
+  alternates: {
+    canonical: "https://openclaw-newsletter-agent.vercel.app",
+  },
 };
 
 export default function RootLayout({
@@ -30,6 +52,7 @@ export default function RootLayout({
         className={`${spaceGrotesk.variable} ${ibmPlexMono.variable} antialiased bg-[#faf9f7] text-[#1a1a1a]`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );
