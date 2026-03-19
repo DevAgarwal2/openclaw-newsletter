@@ -24,17 +24,26 @@ export const metadata: Metadata = {
   publisher: "OpenClaw Updates",
   robots: "index, follow",
   openGraph: {
-    title: "OpenClaw Updates — AI-Powered Release Monitor",
+    title: "OpenClaw Updates - AI-Powered Release Monitor",
     description: "AI-generated summaries of every OpenClaw release. Built for agents and their operators.",
     url: "https://openclaw-newsletter-agent.vercel.app",
     siteName: "OpenClaw Updates",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "https://openclaw-newsletter-agent.vercel.app/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "OpenClaw Updates - AI-Powered Release Monitor",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "OpenClaw Updates — AI-Powered Release Monitor",
+    title: "OpenClaw Updates - AI-Powered Release Monitor",
     description: "AI-generated summaries of every OpenClaw release. Built for agents and their operators.",
+    images: ["https://openclaw-newsletter-agent.vercel.app/og-image.png"],
   },
   alternates: {
     canonical: "https://openclaw-newsletter-agent.vercel.app",
