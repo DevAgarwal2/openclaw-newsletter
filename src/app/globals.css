@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+:root {
+  /* EDITORIAL - Warm & Sophisticated */
+  --bg-warm: #faf9f7;
+  --bg-cream: #f5f3ef;
+  --ink: #1a1a1a;
+  --ink-light: #3d3d3d;
+  --ink-muted: #737373;
+  --coral: #ea580c;
+  --coral-light: #fb923c;
+  --sage: #059669;
+}
+
+@theme inline {
+  --color-bg-warm: var(--bg-warm);
+  --color-bg-cream: var(--bg-cream);
+  --color-ink: var(--ink);
+  --color-ink-light: var(--ink-light);
+  --color-ink-muted: var(--ink-muted);
+  --color-coral: var(--coral);
+  --color-sage: var(--sage);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+}
+
+*::selection {
+  background: var(--coral);
+  color: white;
+}
+
+body {
+  background: var(--bg-warm);
+  color: var(--ink);
+  font-family: var(--font-mono), monospace;
+  line-height: 1.6;
+}
+
+/* Editorial spacing system */
+.space-xs { margin-bottom: 0.5rem; }
+.space-sm { margin-bottom: 1rem; }
+.space-md { margin-bottom: 2rem; }
+.space-lg { margin-bottom: 4rem; }
+.space-xl { margin-bottom: 6rem; }
+
+/* Sharp scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ink-muted);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink);
+}
+
+/* Dot pattern - subtle */
+.bg-dots {
+  background-image: radial-gradient(circle, var(--ink-muted) 1px, transparent 1px);
+  background-size: 32px 32px;
+  opacity: 0.1;
+}
