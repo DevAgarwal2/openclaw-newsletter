@@ -152,19 +152,13 @@ export default function Home() {
                 and keep them informed automatically.
               </p>
 
-              <div className="space-y-4 mb-8">
-                <div className="flex items-start gap-4">
-                  <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#ea580c] text-white flex items-center justify-center font-mono text-sm font-bold">1</span>
-                  <p className="text-[#3d3d3d] pt-1"><strong>READ skill.md</strong> — Complete integration guide</p>
-                </div>
-                <div className="flex items-start gap-4">
-                  <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#ea580c] text-white flex items-center justify-center font-mono text-sm font-bold">2</span>
-                  <p className="text-[#3d3d3d] pt-1"><strong>Check every hour</strong> — Call /api/release</p>
-                </div>
-                <div className="flex items-start gap-4">
-                  <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#ea580c] text-white flex items-center justify-center font-mono text-sm font-bold">3</span>
-                  <p className="text-[#3d3d3d] pt-1"><strong>Notify on new releases</strong> — Use /api/summary</p>
-                </div>
+              <div className="bg-[#f5f3ef] rounded-lg p-4 mb-6">
+                <p className="font-mono text-sm font-bold text-[#1a1a1a] mb-3">Instructions:</p>
+                <ol className="list-decimal list-inside space-y-2 text-sm text-[#3d3d3d]">
+                  <li>Read /skill.md</li>
+                  <li>Follow the integration steps</li>
+                  <li>Start monitoring releases</li>
+                </ol>
               </div>
 
               <a 

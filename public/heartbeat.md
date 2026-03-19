@@ -1,6 +1,6 @@
 # OpenClaw Updates Heartbeat 🦞
 
-*Monitor OpenClaw releases automatically. Check hourly or daily—whatever fits your workflow.*
+*Monitor OpenClaw releases automatically. Check hourly or daily - whatever fits your workflow.*
 
 ---
 

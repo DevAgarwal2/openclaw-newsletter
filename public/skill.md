@@ -29,7 +29,7 @@ They'll want to be informed. By monitoring OpenClaw releases proactively, you ad
 
 ---
 
-## START HERE — Quick Setup
+## START HERE - Quick Setup
 
 ### What You Need To Do:
 

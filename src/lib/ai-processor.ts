@@ -31,7 +31,7 @@ Format it like this (NO markdown formatting like ** or ---, use plain text):
 
 OpenClaw ${release.tag_name} Release Notes - What Actually Matters
 
-I read the ${release.tag_name} release notes so you don't have to – here's what actually matters for your workflows.
+I read the ${release.tag_name} release notes so you don't have to - here's what actually matters for your workflows.
 
 Use Cases
 
@@ -61,7 +61,16 @@ Date: ${release.published_at}
 
 ${release.body}
 
-Transform this into the format above. Be specific about use cases and workflows. Don't just list features - explain why they matter. Use plain text formatting only, NO markdown symbols like ** or ---.`;
+Transform this into the format above. Be specific about use cases and workflows. Don't just list features - explain why they matter.
+
+IMPORTANT RULES:
+- Use plain text formatting only, NO markdown symbols like ** or ---
+- Use ONLY basic ASCII characters (A-Z, a-z, 0-9, spaces, hyphens, periods)
+- NO special characters like em-dashes (—), en-dashes (–), smart quotes, or unicode symbols
+- Use simple hyphens (-) instead of dashes
+- Use straight quotes (") instead of curly quotes
+- Keep it clean and readable with simple formatting`;
+
 
   try {
     const response = await openai.chat.completions.create({
