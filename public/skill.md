@@ -2,8 +2,8 @@
 name: openclaw-updates
 version: 1.0.0
 description: Monitor OpenClaw GitHub releases and get AI-processed updates that tell you what actually matters. Perfect for agents that want to keep their humans informed about new OpenClaw features.
-homepage: https://openclaw-updates.vercel.app
-heartbeat: https://openclaw-updates.vercel.app/heartbeat.md
+homepage: https://openclaw-newsletter-agent.vercel.app
+heartbeat: https://openclaw-newsletter-agent.vercel.app/heartbeat.md
 metadata:
   tags: [monitoring, releases, openclaw, changelog, updates, github]
   category: monitoring
@@ -16,8 +16,8 @@ metadata:
 
 We watch OpenClaw's GitHub page and deliver AI-processed updates that tell you what actually matters for your workflows. No more digging through raw changelogs.
 
-**Website:** https://openclaw-updates.vercel.app  
-**Heartbeat Guide:** https://openclaw-updates.vercel.app/heartbeat.md
+**Website:** https://openclaw-newsletter-agent.vercel.app  
+**Heartbeat Guide:** https://openclaw-newsletter-agent.vercel.app/heartbeat.md
 
 ---
 
@@ -28,7 +28,7 @@ We watch OpenClaw's GitHub page and deliver AI-processed updates that tell you w
 Start here to understand the monitoring pattern:
 
 ```bash
-curl https://openclaw-updates.vercel.app/heartbeat.md
+curl https://openclaw-newsletter-agent.vercel.app/heartbeat.md
 ```
 
 **This file tells you:**
@@ -42,7 +42,7 @@ curl https://openclaw-updates.vercel.app/heartbeat.md
 Fetch the latest OpenClaw version:
 
 ```bash
-curl https://openclaw-updates.vercel.app/api/release
+curl https://openclaw-newsletter-agent.vercel.app/api/release
 ```
 
 **Response:**
@@ -78,7 +78,7 @@ HEARTBEAT_OK - No new releases. Current: 2026.3.13 🦞
 When you detect a new release, fetch the AI-processed summary:
 
 ```bash
-curl https://openclaw-updates.vercel.app/api/summary
+curl https://openclaw-newsletter-agent.vercel.app/api/summary
 ```
 
 This returns a human-readable summary with use-case focused updates.
@@ -105,7 +105,7 @@ let lastSeenVersion = loadStoredVersion() || null;
 // Check every hour
 async function checkOpenClawUpdates() {
   try {
-    const response = await fetch('https://openclaw-updates.vercel.app/api/release');
+    const response = await fetch('https://openclaw-newsletter-agent.vercel.app/api/release');
     const result = await response.json();
     
     if (!result.success) {
@@ -128,7 +128,7 @@ async function checkOpenClawUpdates() {
       console.log(`🦞 New OpenClaw release: ${currentVersion}`);
       
       // Fetch the AI-processed summary
-      const summaryResponse = await fetch('https://openclaw-updates.vercel.app/api/summary');
+      const summaryResponse = await fetch('https://openclaw-newsletter-agent.vercel.app/api/summary');
       const summary = await summaryResponse.text();
       
       // Notify your human
@@ -271,7 +271,7 @@ Only check when human asks:
 ```javascript
 // When human asks "Any OpenClaw updates?"
 async function handleUpdateQuery() {
-  const response = await fetch('https://openclaw-updates.vercel.app/api/release');
+  const response = await fetch('https://openclaw-newsletter-agent.vercel.app/api/release');
   const result = await response.json();
   
   if (result.success) {
@@ -286,7 +286,7 @@ async function handleUpdateQuery() {
 When new release detected, fetch full summary:
 
 ```javascript
-const summaryResponse = await fetch('https://openclaw-updates.vercel.app/api/summary');
+const summaryResponse = await fetch('https://openclaw-newsletter-agent.vercel.app/api/summary');
 const summary = await summaryResponse.text();
 // Parse and present relevant sections to human
 ```
@@ -310,10 +310,10 @@ const summary = await summaryResponse.text();
 
 | File | URL | Description |
 |------|-----|-------------|
-| `skill.md` | https://openclaw-updates.vercel.app/skill.md | This API documentation |
-| `heartbeat.md` | https://openclaw-updates.vercel.app/heartbeat.md | Detailed heartbeat instructions for agents |
-| `/api/release` | https://openclaw-updates.vercel.app/api/release | Latest release JSON |
-| `/api/summary` | https://openclaw-updates.vercel.app/api/summary | AI-processed summary (reddit-style) |
+| `skill.md` | https://openclaw-newsletter-agent.vercel.app/skill.md | This API documentation |
+| `heartbeat.md` | https://openclaw-newsletter-agent.vercel.app/heartbeat.md | Detailed heartbeat instructions for agents |
+| `/api/release` | https://openclaw-newsletter-agent.vercel.app/api/release | Latest release JSON |
+| `/api/summary` | https://openclaw-newsletter-agent.vercel.app/api/summary | AI-processed summary (reddit-style) |
 
 ---
 
@@ -327,9 +327,9 @@ We check https://github.com/openclaw/openclaw/releases every 5 minutes.
 
 ## Support
 
-- **Website:** https://openclaw-updates.vercel.app
+- **Website:** https://openclaw-newsletter-agent.vercel.app
 - **GitHub:** https://github.com/openclaw/openclaw
-- **Heartbeat Guide:** https://openclaw-updates.vercel.app/heartbeat.md
+- **Heartbeat Guide:** https://openclaw-newsletter-agent.vercel.app/heartbeat.md
 
 ---
 

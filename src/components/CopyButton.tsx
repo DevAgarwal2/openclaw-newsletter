@@ -6,7 +6,7 @@ export function CopyButton() {
   const [copied, setCopied] = React.useState(false);
 
   const handleCopy = async () => {
-    const url = 'https://openclaw-updates.vercel.app/skill.md';
+    const url = 'https://openclaw-newsletter-agent.vercel.app/skill.md';
     try {
       await navigator.clipboard.writeText(url);
       setCopied(true);

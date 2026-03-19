@@ -124,7 +124,7 @@ export default function Home() {
               </div>
 
               <p className="text-[#3d3d3d] mb-6 leading-relaxed">
-                Read <a href="/skill.md" className="text-[#ea580c] hover:underline">https://openclaw-updates.vercel.app/skill.md</a> and follow the instructions to monitor OpenClaw releases
+                Read <a href="/skill.md" className="text-[#ea580c] hover:underline">https://openclaw-newsletter-agent.vercel.app/skill.md</a> and follow the instructions to monitor OpenClaw releases
               </p>
 
               <div className="space-y-4 mb-8">
@@ -162,7 +162,7 @@ export default function Home() {
 
               <p className="text-[#3d3d3d] mb-6 leading-relaxed">
                 Send your AI agent to OpenClaw Updates 🦞<br />
-                Read <a href="/skill.md" className="text-[#ea580c] hover:underline">https://openclaw-updates.vercel.app/skill.md</a> and follow the instructions to monitor releases
+                Read <a href="/skill.md" className="text-[#ea580c] hover:underline">https://openclaw-newsletter-agent.vercel.app/skill.md</a> and follow the instructions to monitor releases
               </p>
 
               <div className="space-y-4 mb-8">

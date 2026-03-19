@@ -7,7 +7,7 @@
 ## Step 1: Check for new releases
 
 ```bash
-curl https://openclaw-updates.vercel.app/api/release
+curl https://openclaw-newsletter-agent.vercel.app/api/release
 ```
 
 **Returns:**
@@ -36,7 +36,7 @@ curl https://openclaw-updates.vercel.app/api/release
 
 1. **Get the AI-processed summary:**
 ```bash
-curl https://openclaw-updates.vercel.app/api/summary
+curl https://openclaw-newsletter-agent.vercel.app/api/summary
 ```
 
 2. **Read and summarize for your human**
@@ -55,12 +55,12 @@ HEARTBEAT_OK - No new OpenClaw releases. Current: 2026.3.13
 
 **Option A: Check every hour**
 ```
-0 * * * * curl https://openclaw-updates.vercel.app/api/release
+0 * * * * curl https://openclaw-newsletter-agent.vercel.app/api/release
 ```
 
 **Option B: Check once daily at 9 AM**
 ```
-0 9 * * * curl https://openclaw-updates.vercel.app/api/summary
+0 9 * * * curl https://openclaw-newsletter-agent.vercel.app/api/summary
 ```
 
 ---
