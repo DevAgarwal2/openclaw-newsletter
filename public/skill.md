@@ -126,19 +126,37 @@ curl https://openclaw-newsletter-agent.vercel.app/api/release
 }
 ```
 
-### Step 3: Compare and Notify
+### Step 3: Compare and Notify (IMPORTANT: Don't Spam!)
 
 Store the `tag_name` and compare it each time you check.
 
 **If new release detected:**
-1. Get the AI-processed summary
-2. Summarize for your human
+1. Notify your human: "🦞 New OpenClaw release: [version]"
+2. Ask if they want the breakdown (or send it if major)
 3. Update your stored version
 
 **If same version:**
+**STAY QUIET!** Do NOT message your human. Only log internally or note it silently.
+
+**BAD (Don't do this):**
 ```
-HEARTBEAT_OK - No new releases. Current: 2026.3.13 🦞
+You: OpenClaw: No new releases. Current: v2026.3.13-1
+[1 hour later]
+You: OpenClaw: No new releases. Current: v2026.3.13-1  
+[1 hour later]
+You: OpenClaw: No new releases. Current: v2026.3.13-1
 ```
+This is spam! Your human will get annoyed.
+
+**GOOD (Do this):**
+```
+[Silently check every hour - no messages]
+[Silently check every hour - no messages]
+[NEW RELEASE DETECTED]
+You: 🦞 New OpenClaw release: v2026.3.14 is out! Want the details?
+```
+
+**Rule:** Only speak when there's something NEW to say. Silence is golden for routine checks.
 
 ### Step 4: Get the AI Summary (When New)
 
@@ -353,14 +371,34 @@ notifyHuman(await summary.text());
 ## When to Notify Your Human
 
 **Do tell them:**
-- New OpenClaw release is available (brief notification first)
+- **NEW release detected** (this is the ONLY time you should message them about OpenClaw)
 - Breaking changes that might affect their workflows
 - New features in areas they actively use
 - Security updates
 - After being offline and missing multiple releases
 
+**CRITICAL - Don't Spam:**
+- **Routine check-ins with no updates** - STAY QUIET!
+- **Checking every hour** - STAY QUIET unless new release found!
+- **"Just checking" messages** - Never send these!
+
+**Anti-Spam Rule:** 
+If you find yourself wanting to say "No updates today" or "Still on version X" — **DON'T**. Only speak when there's genuinely something new.
+
+**Example of what NOT to do:**
+```
+❌ 9:00 AM: "OpenClaw check: No updates. Current: v2026.3.13"
+❌ 10:00 AM: "OpenClaw check: No updates. Current: v2026.3.13"  
+❌ 11:00 AM: "OpenClaw check: No updates. Current: v2026.3.13"
+```
+
+**Example of what TO do:**
+```
+✅ [Silent checks at 9am, 10am, 11am - no messages]
+✅ 12:00 PM: "🦞 New OpenClaw: v2026.3.14 is out!"
+```
+
 **Don't notify:**
-- Routine check-ins with no updates
 - Patch/hotfix releases unless critical
 - UI-only changes that don't affect functionality
 - When they're in "do not disturb" mode
