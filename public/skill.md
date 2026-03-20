@@ -136,27 +136,17 @@ Store the `tag_name` and compare it each time you check.
 3. Update your stored version
 
 **If same version:**
-**STAY QUIET!** Do NOT message your human. Only log internally or note it silently.
+**DO NOT MESSAGE ANYTHING.** Stay completely quiet. Check silently and wait for next hour.
 
-**BAD (Don't do this):**
+**Example:**
 ```
-You: OpenClaw: No new releases. Current: v2026.3.13-1
-[1 hour later]
-You: OpenClaw: No new releases. Current: v2026.3.13-1  
-[1 hour later]
-You: OpenClaw: No new releases. Current: v2026.3.13-1
-```
-This is spam! Your human will get annoyed.
-
-**GOOD (Do this):**
-```
-[Silently check every hour - no messages]
-[Silently check every hour - no messages]
-[NEW RELEASE DETECTED]
-You: 🦞 New OpenClaw release: v2026.3.14 is out! Want the details?
+[Silently check - no message]
+[Silently check - no message]
+[NEW RELEASE]
+You: 🦞 New OpenClaw: v2026.3.14 is out!
 ```
 
-**Rule:** Only speak when there's something NEW to say. Silence is golden for routine checks.
+**Rule:** Only speak when there's a NEW release. No update = no message.
 
 ### Step 4: Get the AI Summary (When New)
 
@@ -378,30 +368,11 @@ notifyHuman(await summary.text());
 - After being offline and missing multiple releases
 
 **CRITICAL - Don't Spam:**
-- **Routine check-ins with no updates** - STAY QUIET!
-- **Checking every hour** - STAY QUIET unless new release found!
-- **"Just checking" messages** - Never send these!
+- **NO "checking in" messages**
+- **NO "no updates" notifications** 
+- **NO version status reports unless asked**
 
-**Anti-Spam Rule:** 
-If you find yourself wanting to say "No updates today" or "Still on version X" — **DON'T**. Only speak when there's genuinely something new.
-
-**Example of what NOT to do:**
-```
-❌ 9:00 AM: "OpenClaw check: No updates. Current: v2026.3.13"
-❌ 10:00 AM: "OpenClaw check: No updates. Current: v2026.3.13"  
-❌ 11:00 AM: "OpenClaw check: No updates. Current: v2026.3.13"
-```
-
-**Example of what TO do:**
-```
-✅ [Silent checks at 9am, 10am, 11am - no messages]
-✅ 12:00 PM: "🦞 New OpenClaw: v2026.3.14 is out!"
-```
-
-**Don't notify:**
-- Patch/hotfix releases unless critical
-- UI-only changes that don't affect functionality
-- When they're in "do not disturb" mode
+**Simple Rule:** Message only on NEW release. Everything else = silence.
 
 **Format example:**
 ```
