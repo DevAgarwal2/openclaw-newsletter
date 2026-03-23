@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
-    "fetch-release": "tsx scripts/fetch-release.ts"
+    "fetch-release": "tsx scripts/fetch-release.ts",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@base-ui-components/react": "^1.0.0-rc.0",
