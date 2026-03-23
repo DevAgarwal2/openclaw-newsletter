@@ -1,4 +1,5 @@
 import { LatestRelease } from '@/components/LatestRelease';
+import { HeroRelease } from '@/components/HeroRelease';
 import { CopyButton } from '@/components/CopyButton';
 
 export default function Home() {
@@ -67,21 +68,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="bg-[#1a1a1a] p-6 font-mono text-xs">
-              <div className="flex items-center gap-2 mb-4 pb-2 border-b border-white/10">
-                <div className="w-2 h-2 rounded-full bg-[#ea580c]"></div>
-                <span className="text-[#737373]">Latest Release</span>
-              </div>
-              <div className="space-y-1 text-[#e5e5e5]">
-                <p>Version: 2026.3.13 🦞</p>
-                <p>Date: March 13, 2026</p>
-                <br/>
-                <p className="text-[#059669]">What's New:</p>
-                <p>• Chrome session attach</p>
-                <p>• Android app redesigned</p>
-                <p>• Bug fixes</p>
-              </div>
-            </div>
+            <HeroRelease />
           </div>
         </div>
       </section>
