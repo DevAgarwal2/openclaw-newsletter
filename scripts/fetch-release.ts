@@ -1,4 +1,4 @@
-import { fetchAndStoreLatestRelease } from './src/lib/ai-processor';
+import { fetchAndStoreLatestRelease } from '../src/lib/ai-processor';
 
 console.log('Fetching and processing latest OpenClaw release...');
 

@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
 
 export async function GET() {
   try {
+    // Dynamic import to avoid build-time Prisma initialization
+    const { prisma } = await import('@/lib/prisma');
+    
     // Get the latest processed release from database
     const release = await prisma.release.findFirst({
       orderBy: { publishedAt: 'desc' },
@@ -40,6 +42,28 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Error fetching summary:', error);
+    
+    // Fallback to GitHub if DB fails
+    try {
+      const response = await fetch('https://api.github.com/repos/openclaw/openclaw/releases/latest', {
+        headers: {
+          'Accept': 'application/vnd.github.v3+json',
+          'User-Agent': 'OpenClaw-Newsletter'
+        }
+      });
+      
+      if (response.ok) {
+        const githubRelease = await response.json();
+        return new NextResponse(githubRelease.body, {
+          headers: {
+            'Content-Type': 'text/markdown',
+            'Cache-Control': 'public, max-age=300'
+          }
+        });
+      }
+    } catch {
+      // Ignore GitHub fallback error
+    }
     
     return new NextResponse(
       `Error: Unable to fetch OpenClaw release summary. Please try again later.`,

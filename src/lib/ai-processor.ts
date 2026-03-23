@@ -1,5 +1,4 @@
 import OpenAI from 'openai';
-import { prisma } from './prisma';
 
 const openai = new OpenAI({
   baseURL: 'https://openrouter.ai/api/v1',
@@ -8,7 +7,7 @@ const openai = new OpenAI({
     'HTTP-Referer': 'https://openclaw-newsletter-agent.vercel.app',
     'X-Title': 'OpenClaw Updates',
   },
-};
+});
 
 interface ChangelogEntry {
   tag_name: string;
@@ -72,7 +71,6 @@ IMPORTANT RULES:
 - Use straight quotes (") instead of curly quotes
 - Keep it clean and readable with simple formatting`;
 
-
   try {
     const response = await openai.chat.completions.create({
       model: 'arcee-ai/trinity-large-preview:free',
@@ -118,44 +116,76 @@ View full release notes on GitHub: ${release.html_url}
 Note: AI processing temporarily unavailable. Showing raw changelog.`;
 }
 
-// Get or create processed release from database
+// In-memory cache for build time
+const processedReleases = new Map<string, { content: string; processedAt: string }>();
+
+// Get or create processed release
 export async function getProcessedRelease(release: ChangelogEntry): Promise<string> {
-  // Check database first
-  let dbRelease = await prisma.release.findUnique({
-    where: { tagName: release.tag_name },
-  });
-
-  if (dbRelease?.aiSummary) {
-    return dbRelease.aiSummary;
+  // Check memory cache first (for build time)
+  const cached = processedReleases.get(release.tag_name);
+  if (cached) {
+    return cached.content;
   }
 
-  // Process with AI
-  const summary = await processChangelogWithAI(release);
-
-  // Save to database
-  if (dbRelease) {
-    dbRelease = await prisma.release.update({
+  // Try database if available
+  try {
+    const { prisma } = await import('./prisma');
+    const dbRelease = await prisma.release.findUnique({
       where: { tagName: release.tag_name },
-      data: {
-        aiSummary: summary,
-        processedAt: new Date(),
-      },
     });
-  } else {
-    dbRelease = await prisma.release.create({
-      data: {
-        tagName: release.tag_name,
-        name: release.name,
-        body: release.body,
-        publishedAt: new Date(release.published_at),
-        htmlUrl: release.html_url,
-        aiSummary: summary,
-        processedAt: new Date(),
-      },
-    });
-  }
 
-  return summary;
+    if (dbRelease?.aiSummary) {
+      // Cache in memory
+      processedReleases.set(release.tag_name, {
+        content: dbRelease.aiSummary,
+        processedAt: dbRelease.processedAt?.toISOString() || new Date().toISOString(),
+      });
+      return dbRelease.aiSummary;
+    }
+
+    // Process with AI
+    const summary = await processChangelogWithAI(release);
+
+    // Save to database
+    if (dbRelease) {
+      await prisma.release.update({
+        where: { tagName: release.tag_name },
+        data: {
+          aiSummary: summary,
+          processedAt: new Date(),
+        },
+      });
+    } else {
+      await prisma.release.create({
+        data: {
+          tagName: release.tag_name,
+          name: release.name,
+          body: release.body,
+          publishedAt: new Date(release.published_at),
+          htmlUrl: release.html_url,
+          aiSummary: summary,
+          processedAt: new Date(),
+        },
+      });
+    }
+
+    // Cache in memory
+    processedReleases.set(release.tag_name, {
+      content: summary,
+      processedAt: new Date().toISOString(),
+    });
+
+    return summary;
+  } catch (error) {
+    // Database not available, just process and cache in memory
+    console.log('Database not available, using memory cache');
+    const summary = await processChangelogWithAI(release);
+    processedReleases.set(release.tag_name, {
+      content: summary,
+      processedAt: new Date().toISOString(),
+    });
+    return summary;
+  }
 }
 
 // Fetch and store latest release from GitHub
@@ -174,13 +204,36 @@ export async function fetchAndStoreLatestRelease(): Promise<void> {
 
     const release = await response.json();
 
-    // Check if we already have this release
-    const existing = await prisma.release.findUnique({
-      where: { tagName: release.tag_name },
-    });
+    // Try to check database
+    try {
+      const { prisma } = await import('./prisma');
+      const existing = await prisma.release.findUnique({
+        where: { tagName: release.tag_name },
+      });
 
-    if (!existing) {
-      // Store release and generate AI summary
+      if (!existing) {
+        // Store release and generate AI summary
+        await getProcessedRelease({
+          tag_name: release.tag_name,
+          name: release.name,
+          body: release.body,
+          published_at: release.published_at,
+          html_url: release.html_url,
+        });
+        console.log(`Stored new release: ${release.tag_name}`);
+      } else if (!existing.aiSummary) {
+        // Generate summary if missing
+        await getProcessedRelease({
+          tag_name: release.tag_name,
+          name: release.name,
+          body: release.body,
+          published_at: release.published_at,
+          html_url: release.html_url,
+        });
+        console.log(`Generated AI summary for: ${release.tag_name}`);
+      }
+    } catch (dbError) {
+      // Database not available, just cache in memory
       await getProcessedRelease({
         tag_name: release.tag_name,
         name: release.name,
@@ -188,17 +241,7 @@ export async function fetchAndStoreLatestRelease(): Promise<void> {
         published_at: release.published_at,
         html_url: release.html_url,
       });
-      console.log(`Stored new release: ${release.tag_name}`);
-    } else if (!existing.aiSummary) {
-      // Generate summary if missing
-      await getProcessedRelease({
-        tag_name: release.tag_name,
-        name: release.name,
-        body: release.body,
-        published_at: release.published_at,
-        html_url: release.html_url,
-      });
-      console.log(`Generated AI summary for: ${release.tag_name}`);
+      console.log(`Cached in memory: ${release.tag_name}`);
     }
   } catch (error) {
     console.error('Error fetching/storing release:', error);
