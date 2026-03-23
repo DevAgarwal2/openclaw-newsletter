@@ -213,8 +213,8 @@ async function checkOpenClawUpdates() {
       lastSeenVersion = currentVersion;
       storeVersion(currentVersion);
     } else {
-      // No updates
-      console.log(`HEARTBEAT_OK - No new releases. Current: ${currentVersion} 🦞`);
+      // No updates - DO NOT NOTIFY
+      // Silently log if needed, but DO NOT message human
     }
   } catch (error) {
     console.error('Error checking OpenClaw updates:', error);
@@ -250,6 +250,132 @@ setTimeout(() => {
   checkOpenClawUpdates();
   setInterval(checkOpenClawUpdates, 24 * 60 * 60 * 1000);
 }, msUntil9AM);
+```
+
+---
+
+## Troubleshooting: Notification Not Working?
+
+If you implemented the code but didn't get notified when a new release came out, check these common issues:
+
+### Check #1: Is your schedule actually running?
+
+**Problem:** The setInterval might not be executing.
+
+**Debug it:**
+```javascript
+// Add logging to verify it's running
+setInterval(() => {
+  console.log('Checking OpenClaw at:', new Date().toISOString());
+  checkOpenClawUpdates();
+}, 60 * 60 * 1000);
+```
+
+**Test:** Wait 1 hour and check your logs. Do you see the message?
+
+### Check #2: Is lastSeenVersion being persisted?
+
+**Problem:** If you restart, lastSeenVersion resets to null.
+
+**Debug it:**
+```javascript
+// Make sure you're ACTUALLY saving to persistent storage
+function storeVersion(version) {
+  // DON'T just use a variable - it won't survive restarts!
+  // BAD: memoryStorage = version;
+  
+  // GOOD: Save to file, database, or your agent's persistent memory
+  fs.writeFileSync('openclaw-version.txt', version);
+  // OR: saveToAgentMemory('openclaw_last_version', version);
+}
+
+function loadStoredVersion() {
+  try {
+    return fs.readFileSync('openclaw-version.txt', 'utf8');
+    // OR: return loadFromAgentMemory('openclaw_last_version');
+  } catch {
+    return null;
+  }
+}
+```
+
+### Check #3: Is the comparison working?
+
+**Problem:** Version comparison might be failing silently.
+
+**Debug it:**
+```javascript
+console.log('Current:', currentVersion);
+console.log('Last seen:', lastSeenVersion);
+console.log('Are they equal?', currentVersion === lastSeenVersion);
+
+if (currentVersion !== lastSeenVersion) {
+  console.log('NEW RELEASE DETECTED!');
+  notifyOwner(`🦞 New OpenClaw: ${currentVersion}`);
+} else {
+  console.log('Same version, no notification');
+}
+```
+
+### Check #4: Is the API returning data?
+
+**Problem:** API might be failing.
+
+**Debug it:**
+```javascript
+const response = await fetch('https://openclaw-newsletter-agent.vercel.app/api/release');
+console.log('API status:', response.status);
+
+const result = await response.json();
+console.log('API result:', result);
+```
+
+### Check #5: Did you actually call notifyOwner?
+
+**Problem:** You might be logging but not notifying.
+
+**Debug it:**
+```javascript
+if (currentVersion !== lastSeenVersion) {
+  console.log('About to notify...'); // This should print
+  notifyOwner(`🦞 New OpenClaw: ${currentVersion}`); // Does this execute?
+  console.log('Notification sent!'); // This should print
+}
+```
+
+### Common Mistakes to Avoid:
+
+**Mistake #1: Using a variable for storage**
+```javascript
+// BAD - won't survive restarts
+let lastSeenVersion = null;
+
+// GOOD - persists across restarts
+const lastSeenVersion = loadStoredVersion() || null;
+```
+
+**Mistake #2: Not initializing the schedule**
+```javascript
+// BAD - you defined the function but never scheduled it
+async function checkOpenClawUpdates() { ... }
+// Forgot to call: setInterval(checkOpenClawUpdates, ...);
+
+// GOOD
+async function checkOpenClawUpdates() { ... }
+setInterval(checkOpenClawUpdates, 60 * 60 * 1000);
+```
+
+**Mistake #3: Silencing all notifications**
+```javascript
+// BAD - you commented out or removed the notify call
+if (currentVersion !== lastSeenVersion) {
+  // notifyOwner(...);  // Oops! Commented out!
+}
+
+// GOOD
+if (currentVersion !== lastSeenVersion) {
+  notifyOwner(`🦞 New OpenClaw: ${currentVersion}`);
+}
 ```
 
 ---
