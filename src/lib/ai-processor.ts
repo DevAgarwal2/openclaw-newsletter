@@ -1,4 +1,5 @@
 import OpenAI from 'openai';
+import { prisma } from './prisma';
 
 const openai = new OpenAI({
   baseURL: 'https://openrouter.ai/api/v1',
@@ -7,7 +8,7 @@ const openai = new OpenAI({
     'HTTP-Referer': 'https://openclaw-newsletter-agent.vercel.app',
     'X-Title': 'OpenClaw Updates',
   },
-});
+};
 
 interface ChangelogEntry {
   tag_name: string;
@@ -66,7 +67,7 @@ Transform this into the format above. Be specific about use cases and workflows.
 IMPORTANT RULES:
 - Use plain text formatting only, NO markdown symbols like ** or ---
 - Use ONLY basic ASCII characters (A-Z, a-z, 0-9, spaces, hyphens, periods)
-- NO special characters like em-dashes (—), en-dashes (–), smart quotes, or unicode symbols
+- NO special characters like em-dashes, en-dashes, smart quotes, or unicode symbols
 - Use simple hyphens (-) instead of dashes
 - Use straight quotes (") instead of curly quotes
 - Keep it clean and readable with simple formatting`;
@@ -97,7 +98,6 @@ IMPORTANT RULES:
 }
 
 function generateFallbackSummary(release: ChangelogEntry): string {
-  // Fallback in case AI fails
   const changes = release.body
     .split('\n')
     .filter(line => line.trim().startsWith('-') || line.trim().startsWith('*'))
@@ -105,38 +105,102 @@ function generateFallbackSummary(release: ChangelogEntry): string {
     .map(line => line.trim())
     .join('\n');
 
-  return `# OpenClaw ${release.tag_name} Release Notes
+  return `OpenClaw ${release.tag_name} Release Notes
 
-**Published:** ${new Date(release.published_at).toLocaleDateString()}
+Published: ${new Date(release.published_at).toLocaleDateString()}
 
-## What's New
+What's New
 
 ${changes}
 
-[View full release notes on GitHub](${release.html_url})
+View full release notes on GitHub: ${release.html_url}
 
----
-
-*Note: AI processing temporarily unavailable. Showing raw changelog.*`;
+Note: AI processing temporarily unavailable. Showing raw changelog.`;
 }
 
-// Store for caching processed releases
-const processedReleases = new Map<string, { content: string; processedAt: string }>();
-
+// Get or create processed release from database
 export async function getProcessedRelease(release: ChangelogEntry): Promise<string> {
-  const cached = processedReleases.get(release.tag_name);
-  
-  // Return cached version if it exists
-  if (cached) {
-    return cached.content;
-  }
-  
-  // Process and cache
-  const processed = await processChangelogWithAI(release);
-  processedReleases.set(release.tag_name, {
-    content: processed,
-    processedAt: new Date().toISOString(),
+  // Check database first
+  let dbRelease = await prisma.release.findUnique({
+    where: { tagName: release.tag_name },
   });
-  
-  return processed;
+
+  if (dbRelease?.aiSummary) {
+    return dbRelease.aiSummary;
+  }
+
+  // Process with AI
+  const summary = await processChangelogWithAI(release);
+
+  // Save to database
+  if (dbRelease) {
+    dbRelease = await prisma.release.update({
+      where: { tagName: release.tag_name },
+      data: {
+        aiSummary: summary,
+        processedAt: new Date(),
+      },
+    });
+  } else {
+    dbRelease = await prisma.release.create({
+      data: {
+        tagName: release.tag_name,
+        name: release.name,
+        body: release.body,
+        publishedAt: new Date(release.published_at),
+        htmlUrl: release.html_url,
+        aiSummary: summary,
+        processedAt: new Date(),
+      },
+    });
+  }
+
+  return summary;
+}
+
+// Fetch and store latest release from GitHub
+export async function fetchAndStoreLatestRelease(): Promise<void> {
+  try {
+    const response = await fetch('https://api.github.com/repos/openclaw/openclaw/releases/latest', {
+      headers: {
+        'Accept': 'application/vnd.github.v3+json',
+        'User-Agent': 'OpenClaw-Newsletter'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`GitHub API error: ${response.status}`);
+    }
+
+    const release = await response.json();
+
+    // Check if we already have this release
+    const existing = await prisma.release.findUnique({
+      where: { tagName: release.tag_name },
+    });
+
+    if (!existing) {
+      // Store release and generate AI summary
+      await getProcessedRelease({
+        tag_name: release.tag_name,
+        name: release.name,
+        body: release.body,
+        published_at: release.published_at,
+        html_url: release.html_url,
+      });
+      console.log(`Stored new release: ${release.tag_name}`);
+    } else if (!existing.aiSummary) {
+      // Generate summary if missing
+      await getProcessedRelease({
+        tag_name: release.tag_name,
+        name: release.name,
+        body: release.body,
+        published_at: release.published_at,
+        html_url: release.html_url,
+      });
+      console.log(`Generated AI summary for: ${release.tag_name}`);
+    }
+  } catch (error) {
+    console.error('Error fetching/storing release:', error);
+  }
 }
